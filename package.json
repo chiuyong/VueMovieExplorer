@@ -1,0 +1,31 @@
+{
+  "name": "teste",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "^1.6.1",
+    "eslint": "^8.56.0",
+    "eslint-plugin-vue": "^8.7.1",
+    "vite": "^2.5.4",
+    "vite-plugin-vue2": "1.9.0",
+    "vue": "^2.6.14",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.6",
+    "@types/webpack-env": "^1.18.4",
+    "typescript": "~4.5.5",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
