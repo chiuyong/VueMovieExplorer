@@ -4,5 +4,9 @@
   "tabWidth": 2,
   "singleQuote": true,
   "printWidth": 80,
-  "trailingComma": "all"
+  "trailingComma": "es5",
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "arrowParens": "avoid",
+  "htmlWhitespaceSensitivity": "ignore"
 }
