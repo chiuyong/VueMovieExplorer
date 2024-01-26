@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="primary" dark height="80">
+  <v-app-bar app color="primary" dark height="80" class="topnavbar">
     <div class="d-flex align-center justify-center logo">
       <v-img
         alt="Vuetify Logo"
@@ -56,6 +56,13 @@ export default Vue.extend({
 
 <style scoped>
 /* Add your styles here */
+.topnavbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
 .logo {
   width: 300px;
 }
