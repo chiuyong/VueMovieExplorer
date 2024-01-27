@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
+    "target": "ESNext",
+    "module": "ESNext",
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
@@ -15,7 +15,12 @@
     "sourceMap": true,
     "baseUrl": ".",
     "noEmit": true,
-    "types": ["webpack-env", "vuetify2-component-types", "vuetify"],
+    "types": [
+      "webpack-env",
+      "vite/client",
+      "vuetify2-component-types",
+      "vuetify",
+    ],
     "paths": {
       "@/*": ["./src/*"],
     },
