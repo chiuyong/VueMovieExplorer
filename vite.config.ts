@@ -42,8 +42,8 @@ export default defineConfig(({ command, mode }) => {
       }),
     ],
     define: {
+      // 'process.env': process.env,
       // https://vitejs.dev/config/#define
-      'process.env': process.env,
     },
     resolve: {
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
@@ -82,6 +82,7 @@ export default defineConfig(({ command, mode }) => {
           additionalData: [
             // vuetify variable overrides
             '@import "@/styles/variables.scss"',
+            '@import "@/styles/main.scss"',
             '',
           ].join('\n'),
         },
