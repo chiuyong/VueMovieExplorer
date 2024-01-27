@@ -17,13 +17,13 @@
       flat
       solo-inverted
       hide-details
-      label="Search movies"
-      v-model="search"
-      @input="onSearch"
+      label="Search movie"
+      v-model="movieTitle"
       class="mr-2"
+      @keyup.enter="updateQueryParams"
     ></v-text-field>
 
-    <v-btn icon class="mx-1">
+    <v-btn icon class="mx-1" @click="updateQueryParams">
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
 
@@ -35,6 +35,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 
 export default Vue.extend({
   name: 'TopNavBar',
@@ -42,13 +43,21 @@ export default Vue.extend({
   computed: {},
   data() {
     return {
-      search: '' as string,
+      movieTitle: '' as string,
     };
   },
   methods: {
-    onSearch() {
-      // Emit an event or call an action to perform search
-      this.$emit('search', this.search);
+    ...mapActions('movie', ['setSearchQuery']),
+    updateQueryParams(): void {
+      // If there's a search term, update the query params, otherwise clear them.
+      const query: Record<string, string | undefined> = this.movieTitle
+        ? { search: this.movieTitle }
+        : {};
+
+      // Update the store with the search query.
+      this.setSearchQuery(this.movieTitle);
+      // Use Vue Router's push method to update the URL.
+      this.$router.push({ name: 'movie', query });
     },
   },
 });
