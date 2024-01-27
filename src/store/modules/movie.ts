@@ -52,6 +52,14 @@ const mutations = {
   SET_SEARCH_QUERY(state: any, payload: string) {
     state.searchQuery = payload;
   },
+  RESET_STORE(state: any, payload: boolean) {
+    if (payload) {
+      state.loading = false;
+      state.error = '';
+      state.movie = null;
+      state.searchQuery = '';
+    }
+  },
 };
 
 export default {
