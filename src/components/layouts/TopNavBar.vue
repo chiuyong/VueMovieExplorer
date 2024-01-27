@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app color="primary" dark height="80" class="topnavbar">
-    <div class="d-flex align-center justify-center logo">
+    <div class="d-flex align-center justify-center logo" @click="goToMovie">
       <v-img
         alt="Vuetify Logo"
         class="shrink mr-2"
@@ -14,6 +14,7 @@
 
     <!-- Search Input -->
     <v-text-field
+      v-if="!isFavoritePage"
       flat
       solo-inverted
       hide-details
@@ -23,31 +24,45 @@
       @keyup.enter="updateQueryParams"
     ></v-text-field>
 
-    <v-btn icon class="mx-1" @click="updateQueryParams">
+    <v-spacer v-if="isFavoritePage"></v-spacer>
+
+    <v-btn icon class="mx-1" @click="updateQueryParams" v-if="!isFavoritePage">
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
 
-    <v-btn icon class="mx-1">
-      <v-icon>mdi-heart</v-icon>
-    </v-btn>
+    <v-badge
+      color="red"
+      overlap
+      :content="getMovies.length"
+      :value="getMovies.length"
+    >
+      <v-btn icon class="mx-1" @click="goToFavoriteMovies">
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
+    </v-badge>
   </v-app-bar>
 </template>
 
 <script lang="ts">
+import { navigate } from '@/utils/navigation';
+import { isObjectEmpty } from '@/utils/object';
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default Vue.extend({
   name: 'TopNavBar',
   props: {},
-  computed: {},
+  computed: {
+    ...mapGetters('favoriteMovies', ['getMovies']),
+  },
   data() {
     return {
       movieTitle: '' as string,
+      isFavoritePage: false as Boolean,
     };
   },
   methods: {
-    ...mapActions('movie', ['setSearchQuery']),
+    ...mapMutations('movie', ['SET_SEARCH_QUERY']),
     updateQueryParams(): void {
       // If there's a search term, update the query params, otherwise clear them.
       const query: Record<string, string | undefined> = this.movieTitle
@@ -55,9 +70,46 @@ export default Vue.extend({
         : {};
 
       // Update the store with the search query.
-      this.setSearchQuery(this.movieTitle);
-      // Use Vue Router's push method to update the URL.
-      this.$router.push({ name: 'movie', query });
+      this.SET_SEARCH_QUERY(this.movieTitle);
+
+      // Push method to update the URL.
+      navigate(this.$router, 'movieView', query);
+    },
+    goToFavoriteMovies(): void {
+      navigate(this.$router, 'favoriteMoviesView');
+    },
+    goToMovie(): void {
+      navigate(this.$router, 'movieView');
+    },
+    setIsFavoritePage(routeName: string | null | undefined = null): void {
+      routeName = routeName ?? this.$route.name;
+      if (routeName === 'favoriteMoviesView') {
+        this.isFavoritePage = true;
+      } else {
+        this.isFavoritePage = false;
+      }
+    },
+    resetSearchField(): void {
+      this.movieTitle = '';
+    },
+  },
+  created() {
+    this.movieTitle = this.$route.query.search as string;
+    this.setIsFavoritePage();
+  },
+  watch: {
+    '$route.name'(newName, oldName) {
+      this.setIsFavoritePage(newName);
+      this.resetSearchField();
+    },
+    $route(to, from) {
+      // This method will be called whenever the route changes
+      if (
+        to.name !== from.name ||
+        (to.path === from.path && isObjectEmpty(to.query))
+      ) {
+        this.resetSearchField();
+      }
     },
   },
 });
@@ -74,5 +126,8 @@ export default Vue.extend({
 }
 .logo {
   width: 300px;
+  &:hover {
+    cursor: pointer;
+  }
 }
 </style>
