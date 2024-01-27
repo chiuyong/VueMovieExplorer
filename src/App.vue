@@ -5,19 +5,7 @@
     </v-app-bar>
 
     <v-main>
-      <v-container fluid>
-        <movie-card
-          :id="movie.id"
-          :image="movie.image"
-          :title="movie.title"
-          :year="movie.year"
-          :director="movie.director"
-          :runtime="movie.runtime"
-          :genre="movie.genre"
-          :plot="movie.plot"
-        ></movie-card>
-        <!-- <router-view /> -->
-      </v-container>
+      <router-view />
     </v-main>
   </v-app>
 </template>
@@ -48,15 +36,8 @@ export default Vue.extend({
 });
 </script>
 
-<style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-}
-
-html,
-body {
-  font-size: 0.75rem;
-  font-weight: 400;
+<style scoped lang="scss">
+::v-deep.v-main {
+  padding-top: 0 !important;
 }
 </style>
