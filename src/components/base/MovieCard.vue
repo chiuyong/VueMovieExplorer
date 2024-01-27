@@ -14,7 +14,6 @@
           class="movie-card__image"
           :src="image"
           :lazy-src="image"
-          aspect-ratio="1"
           max-width="84"
         >
           <template v-slot:placeholder>
@@ -282,6 +281,9 @@ export default Vue.extend({
         i {
           font-size: 19px;
           cursor: pointer;
+          &:hover {
+            color: red;
+          }
         }
       }
     }
@@ -324,6 +326,8 @@ export default Vue.extend({
       height: fit-content;
     }
     &__actions {
+      position: absolute;
+      bottom: 20px;
       padding: 0 0 0 25px;
       ul {
         li {
