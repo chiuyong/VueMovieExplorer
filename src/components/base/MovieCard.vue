@@ -14,7 +14,6 @@
           class="movie-card__image"
           :src="image"
           :lazy-src="image"
-          aspect-ratio="1"
           max-width="84"
         >
           <template v-slot:placeholder>
@@ -56,18 +55,6 @@
         </v-card-subtitle>
       </div>
       <v-card-text class="movie-card__plot">
-        <!-- <v-row align="center" class="mx-0">
-            <v-rating
-              :value="4.5"
-              color="amber"
-              dense
-              half-increments
-              readonly
-              size="14"
-            ></v-rating>
-
-            <div class="grey--text ms-4">4.5 (413)</div>
-          </v-row> -->
         <v-row>
           <v-col cols="auto">
             <p class="movie-card__plot-text">
@@ -80,9 +67,29 @@
       <v-card-actions class="movie-card__actions">
         <ul>
           <li>
-            <v-btn icon @click="onClick()">
+            <v-btn
+              icon
+              @click="onFavorited()"
+              :color="isFavorited ? 'red' : ''"
+            >
               <v-icon>mdi-heart</v-icon>
             </v-btn>
+          </li>
+          <li v-if="isFavoritePage" class="ml-2">
+            <div class="d-flex align-center">
+              <v-rating
+                v-model="stars"
+                color="amber"
+                dense
+                hover
+                background-color="grey"
+                size="24"
+                @input="onRated"
+              ></v-rating>
+              <span class="grey--text text--lighten-2 text-h4 ml-2">
+                {{ stars }}
+              </span>
+            </div>
           </li>
         </ul>
       </v-card-actions>
@@ -103,6 +110,7 @@ import {
   VImg,
   VRating,
 } from 'vuetify/lib';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default Vue.extend({
   components: {
@@ -148,8 +156,20 @@ export default Vue.extend({
       type: String,
       required: false,
     },
+    isFavorited: {
+      type: Boolean,
+      required: false,
+    },
+    rating: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
   },
   computed: {
+    ...(mapGetters('favoriteMovies', ['getMovies']) as {
+      getMovies: typeof Array<any>;
+    }),
     getGenres(): string[] {
       return this.genre.split(',').map(genre => genre.trim());
     },
@@ -161,12 +181,21 @@ export default Vue.extend({
   },
   data() {
     return {
-      loading: false,
+      loading: false as Boolean,
+      isFavoritePage: false as Boolean,
+      stars: this.rating,
     };
   },
+  created() {
+    this.isFavoritePage = this.$route.name === 'favoriteMoviesView';
+  },
   methods: {
-    onClick() {
-      this.$emit('click');
+    ...mapMutations('favoriteMovies', ['SET_MOVIES']),
+    onFavorited(): void {
+      this.$emit('favorited', this.id);
+    },
+    onRated(): void {
+      this.$emit('rated', this.stars);
     },
   },
 });
@@ -324,6 +353,8 @@ export default Vue.extend({
       height: fit-content;
     }
     &__actions {
+      position: absolute;
+      bottom: 20px;
       padding: 0 0 0 25px;
       ul {
         li {

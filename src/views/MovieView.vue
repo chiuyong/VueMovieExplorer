@@ -34,6 +34,8 @@
         :runtime="getMovie?.Runtime"
         :genre="getMovie?.Genre"
         :plot="getMovie?.Plot"
+        :isFavorited="isFavorited"
+        @favorited="updateFavoriteList"
       ></movie-card>
       <div v-else>
         <h1 class="text-center">Empty Movie</h1>
@@ -43,8 +45,9 @@
 </template>
 
 <script lang="ts">
+import { isObjectEmpty } from '@/utils/object';
 import Vue from 'vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default Vue.extend({
   name: 'HomeView',
@@ -56,29 +59,63 @@ export default Vue.extend({
   },
   computed: {
     ...mapGetters('movie', ['getMovie', 'getMovieLoading', 'getMovieError']),
+    ...mapGetters('favoriteMovies', ['getMovies']),
   },
 
   data: () => ({
     dialog: false,
-    movie: {
-      id: '1',
-      image:
-        'https://m.media-amazon.com/images/M/MV5BOTA5NjhiOTAtZWM0ZC00MWNhLThiMzEtZDFkOTk2OTU1ZDJkXkEyXkFqcGdeQXVyMTA4NDI1NTQx._V1_SX300.jpg',
-      title: 'Star Wars: Episode IV - A New Hope',
-      year: '1977',
-      director: 'George Lucas',
-      runtime: '2h 22min',
-      genre: 'Action, Adventure, Fantasy',
-      plot: 'The Imperial Forces, under orders from cruel Darth Vader, hold Princess Leia hostage in their efforts to quell the rebellion against the Galactic Empire. Luke Skywalker and Han Solo, captain of the Millennium Falcon, work together with the companionable droid duo R2-D2 and C-3PO to rescue the beautiful princess, help the Rebel Alliance and restore freedom and justice to the Galaxy.',
-    },
+    isFavorited: false,
   }),
   methods: {
     ...mapActions('movie', ['fetchMovie']),
+    ...mapMutations('favoriteMovies', ['SET_MOVIES']),
+    ...mapMutations('movie', ['RESET_STORE']),
+    ...mapMutations('notification', [
+      'SET_NOTIFICATION_STATUS',
+      'SET_NOTIFICATION_MESSAGE',
+    ]),
+
+    updateFavoriteList(id: string) {
+      if (this.isFavorited) {
+        this.removeFavorite(id);
+        this.isFavorited = false;
+        this.sendNotification(true, 'Movie removed from favorites');
+      } else {
+        this.addToFavorite(this.getMovie);
+        this.isFavorited = true;
+        this.sendNotification(true, 'Movie added to favorites');
+      }
+    },
+    removeFavorite(id: string) {
+      const updatedList = this.getMovies.filter((movie: { imdbID: string }) => {
+        if (movie.imdbID !== id) {
+          return {
+            ...movie,
+            rating: 0,
+          };
+        }
+      });
+      this.SET_MOVIES(updatedList);
+    },
+    addToFavorite(movie: any) {
+      const updatedList = [...this.getMovies, movie];
+      this.SET_MOVIES(updatedList);
+    },
+    handleRouteChange() {
+      this.RESET_STORE(true);
+    },
+    sendNotification(status: Boolean, message: string): void {
+      this.SET_NOTIFICATION_STATUS(status);
+      this.SET_NOTIFICATION_MESSAGE(message);
+    },
   },
   async created() {
     if (this.search) {
       await this.fetchMovie(this.search);
     }
+  },
+  beforeDestroy() {
+    this.RESET_STORE(true);
   },
   watch: {
     async search(newVal, oldVal) {
@@ -89,7 +126,20 @@ export default Vue.extend({
     getMovieError(newVal, oldVal) {
       if (newVal) {
         this.dialog = true;
-        setTimeout(() => (this.dialog = false), 4000);
+        // setTimeout(() => (this.dialog = false), 4000);
+      }
+    },
+    getMovie(newVal, oldVal) {
+      if (newVal) {
+        this.isFavorited = !!this.getMovies.find(
+          (movie: { imdbID: string }) => movie.imdbID === newVal.imdbID
+        );
+      }
+    },
+    $route(to, from) {
+      // This method will be called whenever the route changes
+      if (to.name === from.name && isObjectEmpty(to.query)) {
+        this.handleRouteChange();
       }
     },
   },
