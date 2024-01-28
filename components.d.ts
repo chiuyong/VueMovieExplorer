@@ -7,7 +7,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     MovieCard: typeof import('./src/components/base/MovieCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
@@ -15,8 +14,6 @@ declare module 'vue' {
     VAlert: typeof import('vuetify/lib')['VAlert']
     VApp: typeof import('vuetify/lib')['VApp']
     VAppBar: typeof import('vuetify/lib')['VAppBar']
-    VAppBarNavIcon: typeof import('vuetify/lib')['VAppBarNavIcon']
-    VAvatar: typeof import('vuetify/lib')['VAvatar']
     VBadge: typeof import('vuetify/lib')['VBadge']
     VBtn: typeof import('vuetify/lib')['VBtn']
     VCard: typeof import('vuetify/lib')['VCard']
@@ -25,26 +22,21 @@ declare module 'vue' {
     VCardText: typeof import('vuetify/lib')['VCardText']
     VCardTitle: typeof import('vuetify/lib')['VCardTitle']
     VChip: typeof import('vuetify/lib')['VChip']
-    VChipGroup: typeof import('vuetify/lib')['VChipGroup']
     VCol: typeof import('vuetify/lib')['VCol']
     VContainer: typeof import('vuetify/lib')['VContainer']
     VDialog: typeof import('vuetify/lib')['VDialog']
-    VDivider: typeof import('vuetify/lib')['VDivider']
     VIcon: typeof import('vuetify/lib')['VIcon']
     VImg: typeof import('vuetify/lib')['VImg']
     VLayout: typeof import('vuetify/lib')['VLayout']
     VMain: typeof import('vuetify/lib')['VMain']
-    VNavigationDrawer: typeof import('vuetify/lib')['VNavigationDrawer']
     VProgressCircular: typeof import('vuetify/lib')['VProgressCircular']
     VProgressLinear: typeof import('vuetify/lib')['VProgressLinear']
     VRating: typeof import('vuetify/lib')['VRating']
     VRow: typeof import('vuetify/lib')['VRow']
-    VSheet: typeof import('vuetify/lib')['VSheet']
     VSkeletonLoader: typeof import('vuetify/lib')['VSkeletonLoader']
     VSnackbar: typeof import('vuetify/lib')['VSnackbar']
     VSpacer: typeof import('vuetify/lib')['VSpacer']
     VTextField: typeof import('vuetify/lib')['VTextField']
-    VToolbar: typeof import('vuetify/lib')['VToolbar']
     VToolbarTitle: typeof import('vuetify/lib')['VToolbarTitle']
   }
 }
