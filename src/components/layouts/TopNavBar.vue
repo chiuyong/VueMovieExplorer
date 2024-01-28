@@ -1,6 +1,9 @@
 <template>
   <v-app-bar app color="primary" dark height="80" class="topnavbar">
-    <div class="d-flex align-center justify-center logo" @click="goToMovie">
+    <div
+      class="d-flex align-center justify-center topnavbar__logo"
+      @click="goToMovie"
+    >
       <v-img
         alt="Vuetify Logo"
         class="shrink mr-2"
@@ -115,19 +118,40 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 /* Add your styles here */
-.topnavbar {
+::v-deep.topnavbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
+  &__logo {
+    width: 100px;
+    &:hover {
+      cursor: pointer;
+    }
+    .v-toolbar-title {
+      display: block;
+    }
+  }
 }
-.logo {
-  width: 300px;
-  &:hover {
-    cursor: pointer;
+
+/* SM, MD, LG, XL */
+@media screen and (min-width: 769px) {
+  ::v-deep.topnavbar {
+    &__logo {
+      width: 230px;
+    }
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 768px) {
+  ::v-deep.topnavbar {
+    .v-toolbar__title {
+      display: none;
+    }
   }
 }
 </style>
