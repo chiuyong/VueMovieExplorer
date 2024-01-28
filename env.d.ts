@@ -13,6 +13,11 @@ declare module 'vuetify/lib/framework' {
   export default Vuetify;
 }
 
+declare module 'vuetify/lib/locale/pt' {
+  import pt from 'vuetify/lib/locale/pt';
+  export default pt;
+}
+
 interface ImportMetaEnv {
   // see https://vitejs.dev/guide/env-and-mode.html#env-files
   // add .env variables.

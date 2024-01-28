@@ -1,5 +1,6 @@
 import vue from '@vitejs/plugin-vue2';
 import { fileURLToPath, URL } from 'node:url';
+import { visualizer } from 'rollup-plugin-visualizer';
 import { VuetifyResolver } from 'unplugin-vue-components/resolvers';
 import Components from 'unplugin-vue-components/vite';
 import { defineConfig, type UserConfig } from 'vite';
@@ -87,6 +88,38 @@ export default defineConfig(({ command, mode }) => {
           ].join('\n'),
         },
       },
+    },
+    build: {
+      // Build Target
+      // https://vitejs.dev/config/build-options.html#build-target
+      target: 'esnext',
+      // Rollup Options
+      // https://vitejs.dev/config/build-options.html#build-rollupoptions
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // Split external library from transpiled code.
+            vue: ['vue', 'vue-router', 'vuex'],
+            vuetify: ['vuetify/lib'],
+            materialdesignicons: ['@mdi/font/css/materialdesignicons.css'],
+          },
+          plugins: [
+            mode === 'analyze'
+              ? // rollup-plugin-visualizer
+                // https://github.com/btd/rollup-plugin-visualizer
+                visualizer({
+                  open: true,
+                  filename: 'dist/stats.html',
+                  // gzipSize: true,
+                  // brotliSize: true,
+                })
+              : undefined,
+          ],
+        },
+      },
+      // Minify option
+      // https://vitejs.dev/config/build-options.html#build-minify
+      minify: 'esbuild',
     },
     esbuild: {
       // Drop console when production build.

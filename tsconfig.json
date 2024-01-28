@@ -1,60 +1,8 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "strict": true,
-    "jsx": "preserve",
-    "importHelpers": true,
-    "moduleResolution": "node",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "allowJs": true,
-    "forceConsistentCasingInFileNames": true,
-    "useDefineForClassFields": true,
-    "sourceMap": true,
-    "baseUrl": ".",
-    "noEmit": true,
-    "types": [
-      "webpack-env",
-      "vite/client",
-      "vuetify2-component-types",
-      "vuetify",
-    ],
-    "paths": {
-      "@/*": ["./src/*"],
-    },
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
-    "outDir": "./dist",
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx",
-    "src/plugins/vuetify.js",
-    // "src/plugins/logger.js",
-    // "src/utils/deepCopy.js"
+  "$schema": "https://json.schemastore.org/tsconfig.json",
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.vitest.json" },
   ],
-  "exclude": ["node_modules", "./dist/**/*"],
-  "vueCompilerOptions": {
-    "target": 2.7,
-    "experimentalModelPropName": {
-      "input-value": {
-        "v-checkbox": true,
-        "v-switch": true,
-        "v-chip": true,
-        "v-btn": true,
-        "v-list-item": true,
-        "v-bottom-navigation": true,
-      },
-      "": { "input": true },
-      "value": {
-        "input": { "type": "text" },
-        "textarea": true,
-        "select": true,
-      },
-    },
-  },
 }

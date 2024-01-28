@@ -5,6 +5,19 @@
     </v-app-bar>
 
     <v-main>
+      <v-snackbar
+        v-if="$vuetify.breakpoint.width > 768"
+        :timeout="1000"
+        :value="getStatus"
+        right
+        color="green darken-1"
+        class="notification"
+        @input="onNotificationChange"
+        top
+        transition="scroll-x-reverse-transition"
+      >
+        {{ getMessage }}
+      </v-snackbar>
       <router-view />
     </v-main>
   </v-app>
@@ -12,6 +25,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default Vue.extend({
   name: 'App',
@@ -19,25 +33,32 @@ export default Vue.extend({
     TopNavBar: () => import('@/components/layouts/TopNavBar.vue'),
     MovieCard: () => import('@/components/base/MovieCard.vue'),
   },
-  data: () => ({
-    //
-    movie: {
-      id: '1',
-      image:
-        'https://m.media-amazon.com/images/M/MV5BOTA5NjhiOTAtZWM0ZC00MWNhLThiMzEtZDFkOTk2OTU1ZDJkXkEyXkFqcGdeQXVyMTA4NDI1NTQx._V1_SX300.jpg',
-      title: 'Star Wars: Episode IV - A New Hope',
-      year: '1977',
-      director: 'George Lucas',
-      runtime: '2h 22min',
-      genre: 'Action, Adventure, Fantasy',
-      plot: 'The Imperial Forces, under orders from cruel Darth Vader, hold Princess Leia hostage in their efforts to quell the rebellion against the Galactic Empire. Luke Skywalker and Han Solo, captain of the Millennium Falcon, work together with the companionable droid duo R2-D2 and C-3PO to rescue the beautiful princess, help the Rebel Alliance and restore freedom and justice to the Galaxy.',
+  computed: {
+    ...mapGetters('notification', ['getStatus', 'getMessage']),
+  },
+  data: () => ({}),
+  methods: {
+    ...mapMutations('notification', ['RESET_NOTIFICATION']),
+    onNotificationChange(value: boolean) {
+      if (!value) this.RESET_NOTIFICATION(true);
     },
-  }),
+  },
+  watch: {},
 });
 </script>
 
 <style scoped lang="scss">
 ::v-deep.v-main {
-  padding-top: 0 !important;
+  padding: 26px 0px 0px !important;
+}
+
+/* Mobile */
+@media screen and (min-width: 769px) {
+  ::v-deep.v-main {
+    padding-top: 0px !important;
+    .notification {
+      top: 90px;
+    }
+  }
 }
 </style>
