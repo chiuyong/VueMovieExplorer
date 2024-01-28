@@ -126,7 +126,6 @@ export default Vue.extend({
     getMovieError(newVal, oldVal) {
       if (newVal) {
         this.dialog = true;
-        // setTimeout(() => (this.dialog = false), 4000);
       }
     },
     getMovie(newVal, oldVal) {
