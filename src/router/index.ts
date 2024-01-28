@@ -1,3 +1,4 @@
+import FavoriteMoviesView from '@/views/FavoriteMoviesView.vue';
 import MovieView from '@/views/MovieView.vue';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
@@ -10,11 +11,24 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
-      name: 'movie',
+      name: 'movieView',
       component: MovieView,
       props: route => ({ search: route.query.search }),
     },
+    {
+      path: '/favorite-movies',
+      name: 'favoriteMoviesView',
+      component: FavoriteMoviesView,
+    },
   ],
 });
+
+// router.beforeEach((to, from, next) => {
+//   if (to.path === from.path) {
+//     next(false); // prevent redundant navigation by calling next(false)
+//   } else {
+//     next(); // proceed with the navigation
+//   }
+// });
 
 export default router;
