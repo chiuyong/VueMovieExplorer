@@ -1,0 +1,17 @@
+[build]
+  publish = "dist"
+  command = "yarn build"
+
+[build.environment]
+  NODE_VERSION = "18.12.5"
+  YARN_VERSION = "1.22.19"
+  # Your custom environment variables
+  VITE_OMDB_API_KEY = aeaa1710
+
+# This should clear any previous settings and use the specified versions
+[build.cache]
+  clear = true
+
+# Use the following if you want to install Yarn 4.0.2 directly
+[[plugins]]
+package = "@netlify/plugin-yarn-4"
