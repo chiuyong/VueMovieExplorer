@@ -3,8 +3,8 @@
   command = "yarn generate"
 
 [build.environment]
-  NODE_VERSION = "18.12.5"
-  YARN_VERSION = "1.22.19"
+  NODE_VERSION = "20.9.0"
+  YARN_VERSION = "4.0.2"
   VITE_OMDB_API_KEY = "aeaa1710"
 
 [build.cache]
